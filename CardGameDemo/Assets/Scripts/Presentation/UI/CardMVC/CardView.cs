@@ -15,11 +15,19 @@ namespace Main.Presentation
         
         #endregion
 
+        #region Childs
+
+        [Header("SpriteRenderers")]
+        [SerializeField]
+        private SpriteRenderer _srCard;
+        
+        #endregion
+
         #region OnShow | OnHide
 
         protected override void OnShow()
         {
-            GetComponent<SpriteRenderer>().sprite = ResourceProvider.GetCardSprite(_model.Info.Type, _model.Info.Value);
+            _srCard.sprite = ResourceProvider.GetCardSprite(_model.Info.Type, _model.Info.Value);
             gameObject.name = $"{_model.Info.Type}_{_model.Info.Value}";
         }
 
