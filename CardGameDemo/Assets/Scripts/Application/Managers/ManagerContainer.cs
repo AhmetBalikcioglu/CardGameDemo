@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Main.Application
+namespace Main.Application.Managers
 {
     public class ManagerContainer : MonoBehaviour
     {
@@ -18,6 +18,13 @@ namespace Main.Application
         public bool IsAllManagersReady => _allManagersReady;
 
         #endregion
+
+        #region Managers
+
+        public HandManager Hand { get; private set; }
+
+        #endregion
+        
         
         #region Unity: Awake
 
@@ -87,7 +94,7 @@ namespace Main.Application
 
         private void CreateManagers()
         {
-            
+            Hand = new HandManager();
         }
 
         #endregion
@@ -96,7 +103,7 @@ namespace Main.Application
 
         private void BuildManagers()
         {
-            
+            Hand.Build();
         }
 
         #endregion
@@ -105,7 +112,7 @@ namespace Main.Application
 
         private void BeginManagers()
         {
-            
+            Hand.Begin();
         }
 
         #endregion
@@ -114,7 +121,7 @@ namespace Main.Application
 
         private void ReBeginManagers()
         {
-            
+            Hand.ReBegin();
         }
 
         #endregion
@@ -123,7 +130,7 @@ namespace Main.Application
 
         private void RegisterManagers()
         {
-            
+            Hand.Register();
         }
 
         #endregion
@@ -132,7 +139,7 @@ namespace Main.Application
 
         private void UnRegisterManagers()
         {
-            
+            Hand.UnRegister();
         }
 
         #endregion
@@ -141,7 +148,7 @@ namespace Main.Application
 
         private void EndManagers()
         {
-            
+            Hand.End();
         }
 
         #endregion
