@@ -1,13 +1,21 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Lib.Manager;
 using Main.Data;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Main.Application.Managers
 {
     public class HandManager: CManager
     {
+        #region Events
+
+        public event EventHandler HandOrderUpdatedEvent;
+
+        #endregion
+
         #region Field
         
         private List<CardInfo> _fullDeck;
@@ -112,6 +120,8 @@ namespace Main.Application.Managers
                     SetHandToSimilarOrdered();
                     break;
             }
+            
+            HandOrderUpdatedEvent?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion

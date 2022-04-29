@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Main.Data;
+using UnityEngine;
 
 namespace Main
 {
@@ -9,6 +10,10 @@ namespace Main
 
         public const int TotalHandCount = 11;
 
+        public const int CircleRadiusForArc = 20;
+        public const float CircleYPositionForArc = -23f;
+        public const float DegreeBetweenCardsForArc = 0.05f;
+        
         #endregion
         
         #region Deck
