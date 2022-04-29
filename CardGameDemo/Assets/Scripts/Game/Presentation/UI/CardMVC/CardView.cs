@@ -1,7 +1,6 @@
 using System;
 using DG.Tweening;
 using Lib.Mvc;
-using UnityEditor.U2D.Sprites;
 using UnityEngine;
 
 namespace Main.Game.Presentation
