@@ -57,19 +57,22 @@ namespace Main.Game.Presentation.Initializers
 
         public void CreateHand()
         {
-            var prefab = ResourceProvider.GetCardGameObject();
-            StartCoroutine(SpawnCard(prefab));
+            StartCoroutine(SpawnCard());
         }
 
         #endregion
 
         #region Card: Spawn
 
-        private IEnumerator SpawnCard(GameObject prefab)
+        private IEnumerator SpawnCard()
         {
             for (int i = 0; i < Config.TotalHandCount; i++)
             {
-                var gameObject = Instantiate(prefab, _deckContainer.position, Quaternion.identity, _handContainer);
+                var gameObject = CardPoolBehaviour.Instance.GetPooledObject();
+
+                gameObject.transform.parent = _handContainer;
+                gameObject.transform.position = _deckContainer.position;
+                // var gameObject = Instantiate(prefab, _deckContainer.position, Quaternion.identity, _handContainer);
 
                 CardCreatedEvent?.Invoke(this, new CardCreatedEventArgs()
                 {
