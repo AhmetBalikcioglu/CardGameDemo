@@ -22,6 +22,9 @@ namespace Main.Game.Presentation
 
         [SerializeField]
         private Button _btnSimilar;
+        
+        [SerializeField]
+        private Button _btnSmart;
 
         [SerializeField]
         private Button _btnRestart;
@@ -65,7 +68,16 @@ namespace Main.Game.Presentation
         }
 
         #endregion
+        
+        #region Event: OnBtnSmartClicked
 
+        private void OnBtnSmartClicked()
+        {
+            ManagerContainer.Instance.Hand.ChangeHandOrder(HandOrder.Smart);
+        }
+
+        #endregion
+        
         #region Event: OnBtnRestartClicked
 
         private void OnBtnRestartClicked()
@@ -81,6 +93,7 @@ namespace Main.Game.Presentation
         {
             _btnAscending.onClick.AddListener(OnBtnAscendingClicked);
             _btnSimilar.onClick.AddListener(OnBtnSimilarClicked);
+            _btnSmart.onClick.AddListener(OnBtnSmartClicked);
             _btnRestart.onClick.AddListener(OnBtnRestartClicked);
         }
 
@@ -88,6 +101,7 @@ namespace Main.Game.Presentation
         {
             _btnAscending.onClick.RemoveListener(OnBtnAscendingClicked);
             _btnSimilar.onClick.RemoveListener(OnBtnSimilarClicked);
+            _btnSmart.onClick.RemoveListener(OnBtnSmartClicked);
             _btnRestart.onClick.RemoveListener(OnBtnRestartClicked);
         }
 

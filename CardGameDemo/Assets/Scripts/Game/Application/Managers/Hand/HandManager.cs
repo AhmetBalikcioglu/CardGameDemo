@@ -38,7 +38,7 @@ namespace Main.Game.Application.Managers
 
         protected override void OnBegin()
         {
-            CreateRandomHand();
+            CreateTestCaseHand();
         }
 
         protected override void OnReBegin()
@@ -106,7 +106,27 @@ namespace Main.Game.Application.Managers
         }
 
         #endregion
+        
+        #region Hand: CreateTestCase
 
+        private void CreateTestCaseHand()
+        {
+            _handOrder = HandOrder.None;
+            
+            _hand = new List<CardInfo>();
+            _hand = Config.HandTestCase1ConfigList;
+        }
+
+        #endregion
+        
+        #region Hand: CardSwapped
+
+        public void CardSwapped(List<CardInfo> newHandList)
+        {
+            _hand = newHandList;
+        }
+
+        #endregion
         
         #region Hand: ChangeOrder
 
@@ -120,18 +140,12 @@ namespace Main.Game.Application.Managers
                 case HandOrder.Similar:
                     SetHandToSimilarOrdered();
                     break;
+                case HandOrder.Smart:
+                    SetHandToSmartOrdered();
+                    break;
             }
             
             HandOrderUpdatedEvent?.Invoke(this, EventArgs.Empty);
-        }
-
-        #endregion
-
-        #region Hand: CardSwapped
-
-        public void CardSwapped(List<CardInfo> newHandList)
-        {
-            _hand = newHandList;
         }
 
         #endregion
@@ -141,11 +155,11 @@ namespace Main.Game.Application.Managers
 
         private void SetHandToAscendingOrdered()
         {
-            var properAscendingGroupsList = GetProperAscendingGroups();
+            var properAscendingGroupsList = GetProperAscendingGroups(_hand);
 
-            foreach (var properAscendingGroup in properAscendingGroupsList)
+            for (int i = properAscendingGroupsList.Count - 1; i >= 0 ; i--)
             {
-                SetProperGroupsToHand(properAscendingGroup);
+                SetProperGroupsToHand(properAscendingGroupsList[i], _hand);
             }
 
             _handOrder = HandOrder.Ascending;
@@ -157,13 +171,13 @@ namespace Main.Game.Application.Managers
 
         private void SetHandToSimilarOrdered()
         {
-            var properSimilarGroupsList = GetProperSimilarGroups();
+            var properSimilarGroupsList = GetProperSimilarGroups(_hand);
             
-            foreach (var properSimilarGroup in properSimilarGroupsList)
+            for (int i = properSimilarGroupsList.Count - 1; i >= 0 ; i--)
             {
-                SetProperGroupsToHand(properSimilarGroup);
+                SetProperGroupsToHand(properSimilarGroupsList[i], _hand);
             }
-            
+
             _handOrder = HandOrder.Similar;
         }
 
@@ -174,56 +188,29 @@ namespace Main.Game.Application.Managers
         // Just a tryout
         private void SetHandToSmartOrdered()
         {
-            var properAscendingGroupsList = GetProperAscendingGroups();
-            var properSimilarGroupsList = GetProperSimilarGroups();
-        
-            var collidedGroupsInfoDictionary = new SortedDictionary<List<CardInfo>, CollidedGroupInfo>(new DescendingGroupComparer());
+            var properAscendingGroupsList = GetProperAscendingGroups(_hand);
+            var properSimilarGroupsList = GetProperSimilarGroups(_hand);
+
+            var collidedGroupsInfoDictionary = GetCollidedCardCollection(properAscendingGroupsList, properSimilarGroupsList);
+            
+            var properSmartGroupsList = new List<List<CardInfo>>();
+
             foreach (var properAscendingGroup in properAscendingGroupsList)
             {
-                var collidedGroups = new List<List<CardInfo>>();
-                var collidedCards = new List<CardInfo>();
-                foreach (var properSimilarGroup in properSimilarGroupsList)
+                if (!collidedGroupsInfoDictionary.Keys.Contains(properAscendingGroup))
                 {
-                    foreach (var card in properAscendingGroup)
-                    {
-                        if (properSimilarGroup.Contains(card))
-                        {
-                            collidedCards.Add(card);
-                            collidedGroups.Add(properSimilarGroup);
-                            break;
-                        }
-                    }
+                    properSmartGroupsList.Add(properAscendingGroup);
                 }
-        
-                if (collidedGroups.Any())
+            }
+
+            foreach (var properSimilarGroup in properSimilarGroupsList)
+            {
+                if (collidedGroupsInfoDictionary[properSimilarGroup] == null)
                 {
-                    collidedGroupsInfoDictionary.Add(properAscendingGroup, new CollidedGroupInfo(properAscendingGroup, collidedGroups, collidedCards));
+                    properSmartGroupsList.Add(properSimilarGroup);
                 }
             }
             
-            foreach (var properSimilarGroup in properSimilarGroupsList)
-            {
-                var collidedGroups = new List<List<CardInfo>>();
-                var collidedCards = new List<CardInfo>();
-                foreach (var properAscendingGroup in properAscendingGroupsList)
-                {
-                    foreach (var card in properSimilarGroup)
-                    {
-                        if (properAscendingGroup.Contains(card))
-                        {
-                            collidedCards.Add(card);
-                            collidedGroups.Add(properAscendingGroup);
-                            break;
-                        }
-                    }
-                }
-        
-                if (collidedGroups.Any())
-                {
-                    collidedGroupsInfoDictionary.Add(properSimilarGroup, new CollidedGroupInfo(properSimilarGroup, collidedGroups, collidedCards));
-                }
-            }
-        
             var resolvedGroupsList = new List<List<CardInfo>>();
         
             foreach (var collidedGroupInfo in collidedGroupsInfoDictionary)
@@ -244,10 +231,10 @@ namespace Main.Game.Application.Managers
                 {
                     foreach (var collidedCardGroup in collidedGroupInfo.Value.CollidedCardGroups)
                     {
-                        foreach (var cardInfo in collidedGroupInfo.Value.CollidedCardsList)
+                        foreach (var cardInfo in collidedGroupInfo.Value.CollidedCardList)
                         {
                             collidedCardGroup.Remove(cardInfo);
-                            collidedGroupsInfoDictionary[collidedCardGroup].CollidedCardsList.Remove(cardInfo);
+                            collidedGroupsInfoDictionary[collidedCardGroup].CollidedCardList.Remove(cardInfo);
                         }
                         collidedGroupsInfoDictionary[collidedCardGroup].CollidedCardGroups.Remove(collidedCardGroup);
         
@@ -257,7 +244,7 @@ namespace Main.Game.Application.Managers
                         }
                         else
                         {
-                            var newCollideInfo = new CollidedGroupInfo(collidedGroupsInfoDictionary[collidedCardGroup].Group, collidedGroupsInfoDictionary[collidedCardGroup].CollidedCardGroups, collidedGroupsInfoDictionary[collidedCardGroup].CollidedCardsList);
+                            var newCollideInfo = new CollidedGroupInfo(collidedGroupsInfoDictionary[collidedCardGroup].Group, collidedGroupsInfoDictionary[collidedCardGroup].CollidedCardGroups, collidedGroupsInfoDictionary[collidedCardGroup].CollidedCardList);
                             var newGroup = new List<CardInfo>(collidedCardGroup);
                             collidedGroupsInfoDictionary.Remove(collidedCardGroup);
                             collidedGroupsInfoDictionary.Add(newGroup, newCollideInfo);
@@ -268,28 +255,54 @@ namespace Main.Game.Application.Managers
                     continue;
                 }
                 
-                foreach (var collidedCards in collidedGroupInfo.Value.CollidedCardsList)
+                foreach (var collidedCard in collidedGroupInfo.Value.CollidedCardList)
                 {
-                    //1-2-3-4 4-4-4 Scenario                    
+                    //1-2-3-4 4-4-4 Scenario
+
+                    foreach (var collidedCardGroup in collidedGroupInfo.Value.CollidedCardGroups)
+                    {
+                        if (!collidedCardGroup.Contains(collidedCard))
+                        {
+                            continue;
+                        }
+                        
+                        var collidedGroupCopy = new List<CardInfo>(collidedGroupInfo.Key);
+                        collidedGroupCopy.Remove(collidedCard);
+                        if (!IsGroupValid(collidedGroupCopy))
+                        {
+                            collidedCardGroup.Remove(collidedCard);
+                            collidedGroupsInfoDictionary[collidedCardGroup].Group.Remove(collidedCard);
+                            collidedGroupsInfoDictionary[collidedCardGroup].CollidedCardList.Remove(collidedCard);
+                            collidedGroupsInfoDictionary[collidedCardGroup].CollidedCardGroups.Remove(collidedGroupInfo.Key);
+                            
+                            collidedGroupInfo.Value.CollidedCardList.Remove(collidedCard);
+                            collidedGroupInfo.Value.CollidedCardGroups.Remove(collidedCardGroup);
+
+                            if (!IsGroupValid(collidedCardGroup))
+                            {
+                                RemoveCardGroupFromEverywhere(collidedCardGroup, ref collidedGroupsInfoDictionary);
+                            }
+                            
+                            continue;
+                        }
+                        
+                        collidedGroupsInfoDictionary[collidedCardGroup].CollidedCardList.Remove(collidedCard);
+                        collidedGroupsInfoDictionary[collidedCardGroup].CollidedCardGroups.Remove(collidedGroupInfo.Key);
+                            
+                        collidedGroupInfo.Key.Remove(collidedCard);
+                        collidedGroupInfo.Value.CollidedCardList.Remove(collidedCard);
+                        collidedGroupInfo.Value.CollidedCardGroups.Remove(collidedCardGroup);
+                        continue;
+                    }
                 }
-            }
-        
-            var properSmartGroupsList = new List<List<CardInfo>>();
-        
-            foreach (var properAscendingGroup in properAscendingGroupsList)
-            {
-                if (!collidedGroupsInfoDictionary.ContainsKey(properAscendingGroup))
-                {
-                    properSmartGroupsList.Add(properAscendingGroup);
-                }
+                resolvedGroupsList.Add(collidedGroupInfo.Key);
             }
             
-            foreach (var properSimilarGroup in properSimilarGroupsList)
+            properSmartGroupsList.AddRange(resolvedGroupsList);
+            
+            for (int i = properSmartGroupsList.Count - 1; i >= 0 ; i--)
             {
-                if (!collidedGroupsInfoDictionary.ContainsKey(properSimilarGroup))
-                {
-                    properSmartGroupsList.Add(properSimilarGroup);
-                }
+                SetProperGroupsToHand(properSmartGroupsList[i], _hand);
             }
         }
         
@@ -300,7 +313,7 @@ namespace Main.Game.Application.Managers
                 dictionary[collidedCardGroup].CollidedCardGroups.Remove(group);
                 foreach (var cardInfo in group)
                 {
-                    dictionary[collidedCardGroup].CollidedCardsList.Remove(cardInfo);
+                    dictionary[collidedCardGroup].CollidedCardList.Remove(cardInfo);
                 }
             }
             dictionary.Remove(group);
@@ -354,12 +367,12 @@ namespace Main.Game.Application.Managers
         
         #region CardCollection: GetTypes
 
-        private Dictionary<CardType, List<CardInfo>> GetCardTypesCollection()
+        private Dictionary<CardType, List<CardInfo>> GetCardTypesCollection(List<CardInfo> hand)
         {
-            var spades = _hand.FindAll(x => x.Type == CardType.Spades).OrderBy(x => x.Value).ToList();
-            var diamonds = _hand.FindAll(x => x.Type == CardType.Diamonds).OrderBy(x => x.Value).ToList();
-            var hearts = _hand.FindAll(x => x.Type == CardType.Hearts).OrderBy(x => x.Value).ToList();
-            var clubs = _hand.FindAll(x => x.Type == CardType.Clubs).OrderBy(x => x.Value).ToList();
+            var spades = hand.FindAll(x => x.Type == CardType.Spades).OrderBy(x => x.Value).ToList();
+            var diamonds = hand.FindAll(x => x.Type == CardType.Diamonds).OrderBy(x => x.Value).ToList();
+            var hearts = hand.FindAll(x => x.Type == CardType.Hearts).OrderBy(x => x.Value).ToList();
+            var clubs = hand.FindAll(x => x.Type == CardType.Clubs).OrderBy(x => x.Value).ToList();
 
             var similarTypeDictionary = new Dictionary<CardType, List<CardInfo>>()
             { 
@@ -376,21 +389,21 @@ namespace Main.Game.Application.Managers
         
         #region CardCollection: GetValues
 
-        private Dictionary<CardValue, List<CardInfo>> GetCardValuesCollection()
+        private Dictionary<CardValue, List<CardInfo>> GetCardValuesCollection(List<CardInfo> hand)
         {
-            var aces = _hand.FindAll(x => x.Value == CardValue.Ace).ToList();
-            var twos = _hand.FindAll(x => x.Value == CardValue.Two).ToList();
-            var threes = _hand.FindAll(x => x.Value == CardValue.Three).ToList();
-            var fours = _hand.FindAll(x => x.Value == CardValue.Four).ToList();
-            var fives = _hand.FindAll(x => x.Value == CardValue.Five).ToList();
-            var sixes = _hand.FindAll(x => x.Value == CardValue.Six).ToList();
-            var sevens = _hand.FindAll(x => x.Value == CardValue.Six).ToList();
-            var eights = _hand.FindAll(x => x.Value == CardValue.Eight).ToList();
-            var nines = _hand.FindAll(x => x.Value == CardValue.Nine).ToList();
-            var tens = _hand.FindAll(x => x.Value == CardValue.Ten).ToList();
-            var jacks = _hand.FindAll(x => x.Value == CardValue.Jack).ToList();
-            var queens = _hand.FindAll(x => x.Value == CardValue.Queen).ToList();
-            var kings = _hand.FindAll(x => x.Value == CardValue.King).ToList();
+            var aces = hand.FindAll(x => x.Value == CardValue.Ace).ToList();
+            var twos = hand.FindAll(x => x.Value == CardValue.Two).ToList();
+            var threes = hand.FindAll(x => x.Value == CardValue.Three).ToList();
+            var fours = hand.FindAll(x => x.Value == CardValue.Four).ToList();
+            var fives = hand.FindAll(x => x.Value == CardValue.Five).ToList();
+            var sixes = hand.FindAll(x => x.Value == CardValue.Six).ToList();
+            var sevens = hand.FindAll(x => x.Value == CardValue.Six).ToList();
+            var eights = hand.FindAll(x => x.Value == CardValue.Eight).ToList();
+            var nines = hand.FindAll(x => x.Value == CardValue.Nine).ToList();
+            var tens = hand.FindAll(x => x.Value == CardValue.Ten).ToList();
+            var jacks = hand.FindAll(x => x.Value == CardValue.Jack).ToList();
+            var queens = hand.FindAll(x => x.Value == CardValue.Queen).ToList();
+            var kings = hand.FindAll(x => x.Value == CardValue.King).ToList();
 
             var similarValueDictionary = new Dictionary<CardValue, List<CardInfo>>()
             { 
@@ -412,13 +425,70 @@ namespace Main.Game.Application.Managers
         }
         
         #endregion
+
+        #region CardCollection: GetCollided
+
+        private SortedDictionary<List<CardInfo>, CollidedGroupInfo> GetCollidedCardCollection(List<List<CardInfo>> properAscendingGroupsList, List<List<CardInfo>> properSimilarGroupsList)
+        {
+            var collidedGroupsInfoDictionary = new SortedDictionary<List<CardInfo>, CollidedGroupInfo>(new DescendingGroupComparer());
+            foreach (var properAscendingGroup in properAscendingGroupsList)
+            {
+                var collidedGroups = new List<List<CardInfo>>();
+                var collidedCards = new List<CardInfo>();
+                foreach (var properSimilarGroup in properSimilarGroupsList)
+                {
+                    foreach (var card in properAscendingGroup)
+                    {
+                        if (properSimilarGroup.Contains(card))
+                        {
+                            collidedCards.Add(card);
+                            collidedGroups.Add(properSimilarGroup);
+                            break;
+                        }
+                    }
+                }
+        
+                if (collidedGroups.Any())
+                {
+                    collidedGroupsInfoDictionary.Add(properAscendingGroup, new CollidedGroupInfo(properAscendingGroup, collidedGroups, collidedCards));
+                }
+            }
+
+            foreach (var properSimilarGroup in properSimilarGroupsList)
+            {
+                var collidedGroups = new List<List<CardInfo>>();
+                var collidedCards = new List<CardInfo>();
+                foreach (var properAscendingGroup in properAscendingGroupsList)
+                {
+                    foreach (var card in properSimilarGroup)
+                    {
+                        if (properAscendingGroup.Contains(card))
+                        {
+                            collidedCards.Add(card);
+                            collidedGroups.Add(properAscendingGroup);
+                            break;
+                        }
+                    }
+                }
+
+                if (collidedGroups.Any())
+                {
+                    collidedGroupsInfoDictionary.Add(properSimilarGroup,
+                        new CollidedGroupInfo(properSimilarGroup, collidedGroups, collidedCards));
+                }
+            }
+
+            return collidedGroupsInfoDictionary;
+        }
+
+        #endregion
         
         
         #region Ascending: GetProperGroups
 
-        private List<List<CardInfo>> GetProperAscendingGroups()
+        internal List<List<CardInfo>> GetProperAscendingGroups(List<CardInfo> hand)
         {
-            var cardTypesCollection = GetCardTypesCollection();
+            var cardTypesCollection = GetCardTypesCollection(hand);
 
             var properAscendingGroups = new List<List<CardInfo>>();
             
@@ -467,9 +537,9 @@ namespace Main.Game.Application.Managers
 
         #region Similar: GetProperGroups
 
-        private List<List<CardInfo>> GetProperSimilarGroups()
+        internal List<List<CardInfo>> GetProperSimilarGroups(List<CardInfo> hand)
         {
-            var cardValuesCollection = GetCardValuesCollection();
+            var cardValuesCollection = GetCardValuesCollection(hand);
 
             var savedGroups = new List<List<CardInfo>>();
 
@@ -489,12 +559,12 @@ namespace Main.Game.Application.Managers
         
         #region Hand: SetProperGroups
 
-        private void SetProperGroupsToHand(List<CardInfo> properGroupList)
+        internal void SetProperGroupsToHand(List<CardInfo> properGroupList, List<CardInfo> hand)
         {
             for (int i = 0; i < properGroupList.Count; i++)
             {
-                _hand.Remove(properGroupList[i]);
-                _hand.Insert(i, properGroupList[i]);
+                hand.Remove(properGroupList[i]);
+                hand.Insert(i, properGroupList[i]);
                 Debug.Log($"{ properGroupList[i].Type }_{ properGroupList[i].Value }");
             }
         }

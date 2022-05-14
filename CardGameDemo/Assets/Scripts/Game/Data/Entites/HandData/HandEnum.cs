@@ -4,6 +4,7 @@ namespace Main.Game.Data
     {
         None,
         Ascending,
-        Similar
+        Similar,
+        Smart
     }
 }

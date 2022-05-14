@@ -13,6 +13,25 @@ namespace Main.Game
         public const float CircleYPositionForArc = -23f;
         public const float DegreeBetweenCardsForArc = 0.05f;
         
+        #region Test - Case1
+
+        public static readonly List<CardInfo> HandTestCase1ConfigList = new List<CardInfo>()
+        {
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Ace } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Two } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Five } },
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Ace } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Clubs, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Ace } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Four } }
+        };
+
+        #endregion
+        
         #endregion
         
         #region Deck

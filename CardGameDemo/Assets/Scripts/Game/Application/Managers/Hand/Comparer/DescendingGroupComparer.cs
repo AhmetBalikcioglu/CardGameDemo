@@ -3,7 +3,7 @@ using Main.Game.Data;
 
 namespace Main.Game.Application.Managers.Comparer
 {
-    public class DescendingGroupComparer : IComparer<List<CardInfo>>
+    public class DescendingGroupComparer : IComparer<List<CardInfo>>, IEqualityComparer<List<CardInfo>>
     {
         public int Compare(List<CardInfo> x, List<CardInfo> y)
         {
@@ -32,6 +32,23 @@ namespace Main.Game.Application.Managers.Comparer
             }
 
             return totalValue;
+        }
+
+        public bool Equals(List<CardInfo> x, List<CardInfo> y)
+        {
+            if (ReferenceEquals(x, y)) return true;
+            if (ReferenceEquals(x, null)) return false;
+            if (ReferenceEquals(y, null)) return false;
+            if (x.GetType() != y.GetType()) return false;
+            return x.Capacity == y.Capacity && x.Count == y.Count;
+        }
+
+        public int GetHashCode(List<CardInfo> obj)
+        {
+            unchecked
+            {
+                return (obj.Capacity * 397) ^ obj.Count;
+            }
         }
     }
 }
