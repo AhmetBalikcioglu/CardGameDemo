@@ -2,7 +2,8 @@
     "name": "Main.Lobby",
     "rootNamespace": "",
     "references": [
-        "GUID:c844c6d63cc6e4c23a09881a887ea167"
+        "GUID:c844c6d63cc6e4c23a09881a887ea167",
+        "GUID:011541a7b35044f209efd2fb695e7aae"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

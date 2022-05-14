@@ -38,7 +38,7 @@ namespace Main.Lobby
 
         private void StartLoadGameSequence()
         {
-            SceneManager.LoadSceneAsync("GameScene");
+            SceneManager.LoadSceneAsync(AppSceneName.Game);
         }
 
         #endregion
