@@ -49,15 +49,17 @@ SpriteAtlas:
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: fafb2c049791b4e168b0a5bf5714fbdf, type: 3}
   - {fileID: 21300000, guid: b38dc6c4b423d5146bcdcaa2e24d85db, type: 3}
   - {fileID: 21300000, guid: ba04e795fe5fb3c4ba42f3dd2fae2280, type: 3}
-  - {fileID: 21300000, guid: 04599436eca0ea04f9465dec117c2b5c, type: 3}
   - {fileID: 21300000, guid: 8d2744667ba9b9246949e7e6bf96834a, type: 3}
+  - {fileID: 21300000, guid: 3b11c41d0660e4e1898bdd93a56abe25, type: 3}
   m_PackedSpriteNamesToIndex:
+  - Image_Button_Smart
   - Image_Button_Play
   - Image_Button_Ascending
-  - Image_Button_Restart
   - Image_Button_Similar
+  - Image_Button_Restart
   m_RenderDataMap: {}
   m_Tag: UIAtlas
   m_IsVariant: 0
