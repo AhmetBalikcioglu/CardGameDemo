@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Main.Game.Application.Managers;
+using Main.Game.Data;
 using Main.Game.Presentation.Initializers;
 using UnityEngine;
 
@@ -77,7 +78,24 @@ namespace Main.Game.Presentation
         }
 
         #endregion
+        
+        #region Hand: Reset
 
+        public void ResetHand()
+        {
+            _selectedCard = null;
+            foreach (var cardController in _cardControllerList)
+            {
+                cardController.OnCardSelectedEvent -= OnCardSelected;
+                cardController.OnCardReleasedEvent -= OnCardReleased;
+                
+                cardController.DeInit();
+            }
+            _cardControllerList.Clear();
+        }
+
+        #endregion
+        
         #region Card: Swap
 
         private void CheckForCardSwap(CardController cardController)
@@ -123,6 +141,13 @@ namespace Main.Game.Presentation
             {
                 rightCardController.View.GetComponent<SpriteRenderer>().sortingOrder = leftCardIndex;
             }
+
+            var newHandList = new List<CardInfo>();
+            foreach (var cardController in _cardControllerList)
+            {
+                newHandList.Add(cardController.Model.Info);
+            }
+            ManagerContainer.Instance.Hand.CardSwapped(newHandList);
         }
 
         #endregion

@@ -24,10 +24,34 @@ namespace Main.Game.Application
 
         private void OnEnable()
         {
-            ManagerContainer.Instance.Init();
+            Init();
         }
 
         private void Start()
+        {
+            Launch();
+        }
+
+        private void OnDestroy()
+        {
+            DeInit();
+        }
+
+        #endregion
+
+        
+        #region Init
+
+        private void Init()
+        {
+            ManagerContainer.Instance.Init();
+        }
+
+        #endregion
+        
+        #region Launch
+
+        private void Launch()
         {
             ManagerContainer.Instance.Launch();
             
@@ -40,7 +64,11 @@ namespace Main.Game.Application
             AddEvents();
         }
 
-        private void OnDestroy()
+        #endregion
+
+        #region DeInit
+
+        private void DeInit()
         {
             RemoveEvents();
             
@@ -100,7 +128,9 @@ namespace Main.Game.Application
                 return;
             }
             
-            SceneManager.LoadScene("GameScene");
+            _handController.ResetHand();
+            ManagerContainer.Instance.Hand.CreateRandomHand();
+            HandInitializer.Instance.CreateHand();
         }
 
         #endregion

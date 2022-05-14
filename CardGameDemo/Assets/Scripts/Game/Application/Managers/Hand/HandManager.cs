@@ -86,9 +86,9 @@ namespace Main.Game.Application.Managers
 
         #endregion
 
-        #region Hard: CreateRandom
+        #region Hand: CreateRandom
 
-        private void CreateRandomHand()
+        public void CreateRandomHand()
         {
             _handOrder = HandOrder.None;
             
@@ -123,6 +123,15 @@ namespace Main.Game.Application.Managers
             }
             
             HandOrderUpdatedEvent?.Invoke(this, EventArgs.Empty);
+        }
+
+        #endregion
+
+        #region Hand: CardSwapped
+
+        public void CardSwapped(List<CardInfo> newHandList)
+        {
+            _hand = newHandList;
         }
 
         #endregion

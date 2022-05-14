@@ -26,7 +26,7 @@ namespace Main.Game.Presentation
 
         protected override void OnShow()
         {
-            _srCard.sprite = ResourceProvider.GetCardSprite(_model.Info.Type, _model.Info.Value);
+            _srCard.sprite = ResourceProvider.GetCardSprite(_model.Info.Type, _model.Info.Value); //TODO: DrawCall (increases draw call for every card)
             gameObject.name = $"{_model.Info.Type}_{_model.Info.Value}";
         }
 

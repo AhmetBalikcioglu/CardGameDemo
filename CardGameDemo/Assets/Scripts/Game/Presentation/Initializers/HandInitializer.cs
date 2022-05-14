@@ -57,6 +57,7 @@ namespace Main.Game.Presentation.Initializers
 
         public void CreateHand()
         {
+            _didHandCreated = false;
             StartCoroutine(SpawnCard());
         }
 
@@ -72,7 +73,6 @@ namespace Main.Game.Presentation.Initializers
 
                 gameObject.transform.parent = _handContainer;
                 gameObject.transform.position = _deckContainer.position;
-                // var gameObject = Instantiate(prefab, _deckContainer.position, Quaternion.identity, _handContainer);
 
                 CardCreatedEvent?.Invoke(this, new CardCreatedEventArgs()
                 {
