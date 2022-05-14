@@ -1,6 +1,7 @@
 using System;
 using Main.Game.Application.Managers;
 using Main.Game.Data;
+using Main.Game.Presentation.Initializers;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -50,11 +51,16 @@ namespace Main.Game.Presentation
 
         #endregion
 
-
+        
         #region Event: OnBtnAscendingClicked
 
         private void OnBtnAscendingClicked()
         {
+            if (!HandInitializer.Instance.DidHandCreated)
+            {
+                return;
+            }
+
             ManagerContainer.Instance.Hand.ChangeHandOrder(HandOrder.Ascending);
         }
 
@@ -64,6 +70,11 @@ namespace Main.Game.Presentation
 
         private void OnBtnSimilarClicked()
         {
+            if (!HandInitializer.Instance.DidHandCreated)
+            {
+                return;
+            }
+
             ManagerContainer.Instance.Hand.ChangeHandOrder(HandOrder.Similar);
         }
 
@@ -73,6 +84,11 @@ namespace Main.Game.Presentation
 
         private void OnBtnSmartClicked()
         {
+            if (!HandInitializer.Instance.DidHandCreated)
+            {
+                return;
+            }
+
             ManagerContainer.Instance.Hand.ChangeHandOrder(HandOrder.Smart);
         }
 
