@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Main.Game;
 using Main.Game.Application.Managers;
 using Main.Game.Data;
@@ -7,6 +6,8 @@ using NUnit.Framework;
 
 public class SortTests
 {
+    #region TestCase1: AscendingOrdered
+
     [Test]
     public void TestCase1AscendingOrdered()
     {
@@ -22,89 +23,27 @@ public class SortTests
         }
         
         var handTestCase1AscendingOrdered = new List<CardInfo>()
-        {
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Spades,
-                    Value = CardValue.Ace
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Spades,
-                    Value = CardValue.Two
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Spades,
-                    Value = CardValue.Three
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Spades,
-                    Value = CardValue.Four
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Diamonds,
-                    Value = CardValue.Three
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Diamonds,
-                    Value = CardValue.Four
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Diamonds,
-                    Value = CardValue.Five
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Hearts,
-                    Value = CardValue.Ace
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Hearts,
-                    Value = CardValue.Four
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Clubs,
-                    Value = CardValue.Four
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Diamonds,
-                    Value = CardValue.Ace
-                }
-            }
+        { 
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Ace } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Two } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Four } }, 
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Five } },
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Ace } },
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Clubs, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Ace } }
         };
         
         CollectionAssert.AreEqual(handTestCase1AscendingOrdered, hand);
     }
-    
+
+    #endregion
+
+    #region TestCase1: SimilarOrdered
+
     [Test]
     public void TestCase1SimilarOrdered()
     {
@@ -121,85 +60,21 @@ public class SortTests
         
         var handTestCase1SimilarOrdered = new List<CardInfo>()
         {
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Hearts,
-                    Value = CardValue.Ace
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Spades,
-                    Value = CardValue.Ace
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Diamonds,
-                    Value = CardValue.Ace
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Hearts,
-                    Value = CardValue.Four
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Clubs,
-                    Value = CardValue.Four
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Spades,
-                    Value = CardValue.Four
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Diamonds,
-                    Value = CardValue.Four
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Spades,
-                    Value = CardValue.Two
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Diamonds,
-                    Value = CardValue.Five
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Diamonds,
-                    Value = CardValue.Three
-                }
-            },
-            {
-                new CardInfo()
-                {
-                    Type = CardType.Spades,
-                    Value = CardValue.Three
-                }
-            }
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Ace } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Ace } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Ace } },
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Clubs, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Two } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Five } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Three } }
         };
         
         CollectionAssert.AreEqual(handTestCase1SimilarOrdered, hand);
     }
+
+    #endregion
 }
