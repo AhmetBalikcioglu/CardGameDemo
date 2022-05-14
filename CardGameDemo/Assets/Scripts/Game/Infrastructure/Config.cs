@@ -1,10 +1,18 @@
 using System.Collections.Generic;
 using Main.Game.Data;
+using UnityEngine;
 
 namespace Main.Game
 {
     public static class Config
     {
+        #region Screen
+
+        public static readonly Vector2 REF_RESOLUTION = new Vector2(1920f, 1080f);
+        public static readonly Vector2 REF_BOUNDS = REF_RESOLUTION / 100f;
+
+        #endregion
+
         #region Hand
 
         public const int TotalHandCount = 11;
