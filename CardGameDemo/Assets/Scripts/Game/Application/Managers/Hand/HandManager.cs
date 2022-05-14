@@ -486,7 +486,7 @@ namespace Main.Game.Application.Managers
         
         #region Ascending: GetProperGroups
 
-        public List<List<CardInfo>> GetProperAscendingGroups(List<CardInfo> hand)
+        internal List<List<CardInfo>> GetProperAscendingGroups(List<CardInfo> hand)
         {
             var cardTypesCollection = GetCardTypesCollection(hand);
 
@@ -537,7 +537,7 @@ namespace Main.Game.Application.Managers
 
         #region Similar: GetProperGroups
 
-        public List<List<CardInfo>> GetProperSimilarGroups(List<CardInfo> hand)
+        internal List<List<CardInfo>> GetProperSimilarGroups(List<CardInfo> hand)
         {
             var cardValuesCollection = GetCardValuesCollection(hand);
 
@@ -559,7 +559,7 @@ namespace Main.Game.Application.Managers
         
         #region Hand: SetProperGroups
 
-        public void SetProperGroupsToHand(List<CardInfo> properGroupList, List<CardInfo> hand)
+        internal void SetProperGroupsToHand(List<CardInfo> properGroupList, List<CardInfo> hand)
         {
             for (int i = 0; i < properGroupList.Count; i++)
             {

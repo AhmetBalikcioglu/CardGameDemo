@@ -5,7 +5,7 @@ using Main.Game.Presentation.Initializers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Main.Game.Application
+namespace Main.Game
 {
     public class GameSceneController: MonoBehaviour
     {

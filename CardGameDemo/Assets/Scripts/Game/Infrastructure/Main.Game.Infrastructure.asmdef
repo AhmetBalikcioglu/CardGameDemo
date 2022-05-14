@@ -1,11 +1,8 @@
 {
-    "name": "Main.Game",
+    "name": "Main.Game.Infrastructure",
     "rootNamespace": "",
     "references": [
-        "GUID:c844c6d63cc6e4c23a09881a887ea167",
-        "GUID:3d42ecfb81f434d6bad20fb726d3203e",
-        "GUID:a41a9c885269e4b0e8ee85d9e087790a",
-        "GUID:08648544cf1ba4223b6d9bd7c10cb42a"
+        "GUID:41c1e6cf5aa6f478e994d0628d60029c"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

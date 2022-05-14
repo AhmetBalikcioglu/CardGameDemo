@@ -5,7 +5,10 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Lib",
-        "Main.Game"
+        "Main.Game.Data",
+        "Main.Game.Application",
+        "Main.Game.Application.HandManager",
+        "Main.Game.Infrastructure"
     ],
     "includePlatforms": [
         "Editor"
