@@ -32,11 +32,6 @@ namespace Main.Game
             Launch();
         }
 
-        private void OnDestroy()
-        {
-            DeInit();
-        }
-
         #endregion
 
         
@@ -91,7 +86,10 @@ namespace Main.Game
 
         private void ExitApp(bool isQuit)
         {
-            
+            if (isQuit)
+            {
+                DeInit();
+            }
         }
 
         #endregion
