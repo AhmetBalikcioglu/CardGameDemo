@@ -5,14 +5,24 @@ namespace Main.Game.Data
     public class CollidedGroupInfo
     {
         public List<CardInfo> Group { get; set; }
-        public List<List<CardInfo>> CollidedCardGroups { get; set; }
-        public List<CardInfo> CollidedCardList { get; set; }
+        public List<ColliderGroupInfo> ColliderGroupInfoList { get; set; }
 
-        public CollidedGroupInfo(List<CardInfo> group, List<List<CardInfo>> collidedCardGroups, List<CardInfo> collidedCardsList)
+        public CollidedGroupInfo(List<CardInfo> group, List<ColliderGroupInfo> colliderGroupInfoList)
         {
             Group = new List<CardInfo>(group);
-            CollidedCardGroups = new List<List<CardInfo>>(collidedCardGroups);
-            CollidedCardList = new List<CardInfo>(collidedCardsList);
+            ColliderGroupInfoList = new List<ColliderGroupInfo>(colliderGroupInfoList);
+        }
+    }
+
+    public class ColliderGroupInfo
+    {
+        public CardInfo Card { get; set; }
+        public List<CardInfo> Group { get; set; }
+        
+        public ColliderGroupInfo(List<CardInfo> group, CardInfo card)
+        {
+            Card = card;
+            Group = new List<CardInfo>(group);
         }
     }
 }
