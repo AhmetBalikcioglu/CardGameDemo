@@ -127,7 +127,7 @@ namespace Main.Game
             }
             
             _handController.ResetHand();
-            ManagerContainer.Instance.Hand.CreateRandomHand();
+            ManagerContainer.Instance.Hand.CreateHand();
             HandInitializer.Instance.CreateHand();
         }
 

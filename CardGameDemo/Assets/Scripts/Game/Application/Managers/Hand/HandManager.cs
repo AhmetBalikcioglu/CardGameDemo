@@ -37,7 +37,7 @@ namespace Main.Game.Application.Managers
 
         protected override void OnBegin()
         {
-            CreateTestCaseHand();
+            CreateHand();
         }
 
         protected override void OnReBegin()
@@ -85,9 +85,25 @@ namespace Main.Game.Application.Managers
 
         #endregion
 
+        #region Hand: Create
+
+        public void CreateHand()
+        {
+            if (AppController.Instance.AppConfig.TestEnabled)
+            {
+                CreateTestCaseHand();
+            }
+            else
+            {
+                CreateRandomHand();
+            }
+        }
+
+        #endregion
+        
         #region Hand: CreateRandom
 
-        public void CreateRandomHand()
+        private void CreateRandomHand()
         {
             _handOrder = HandOrder.None;
             
@@ -108,12 +124,11 @@ namespace Main.Game.Application.Managers
         
         #region Hand: CreateTestCase
 
-        private void CreateTestCaseHand()
+        internal void CreateTestCaseHand()
         {
             _handOrder = HandOrder.None;
             
-            _hand = new List<CardInfo>();
-            _hand = Config.HandTestCase1ConfigList;
+            _hand = new List<CardInfo>(Config.HandTestCase1ConfigList);
         }
 
         #endregion
@@ -158,7 +173,7 @@ namespace Main.Game.Application.Managers
 
             for (int i = properAscendingGroupsList.Count - 1; i >= 0 ; i--)
             {
-                SetProperGroupsToHand(properAscendingGroupsList[i], _hand);
+                SetProperGroupsToHand(properAscendingGroupsList[i]);
             }
 
             _handOrder = HandOrder.Ascending;
@@ -174,7 +189,7 @@ namespace Main.Game.Application.Managers
             
             for (int i = properSimilarGroupsList.Count - 1; i >= 0 ; i--)
             {
-                SetProperGroupsToHand(properSimilarGroupsList[i], _hand);
+                SetProperGroupsToHand(properSimilarGroupsList[i]);
             }
 
             _handOrder = HandOrder.Similar;
@@ -256,8 +271,10 @@ namespace Main.Game.Application.Managers
             
             for (int i = properSmartGroupsList.Count - 1; i >= 0 ; i--)
             {
-                SetProperGroupsToHand(properSmartGroupsList[i], _hand);
+                SetProperGroupsToHand(properSmartGroupsList[i]);
             }
+            
+            _handOrder = HandOrder.Smart;
         }
         
         #endregion
@@ -392,7 +409,7 @@ namespace Main.Game.Application.Managers
         
         #region Ascending: GetProperGroups
 
-        internal List<List<CardInfo>> GetProperAscendingGroups(List<CardInfo> hand)
+        private List<List<CardInfo>> GetProperAscendingGroups(List<CardInfo> hand)
         {
             var cardTypesCollection = GetCardTypesCollection(hand);
 
@@ -443,7 +460,7 @@ namespace Main.Game.Application.Managers
 
         #region Similar: GetProperGroups
 
-        internal List<List<CardInfo>> GetProperSimilarGroups(List<CardInfo> hand)
+        private List<List<CardInfo>> GetProperSimilarGroups(List<CardInfo> hand)
         {
             var cardValuesCollection = GetCardValuesCollection(hand);
 
@@ -465,12 +482,12 @@ namespace Main.Game.Application.Managers
         
         #region Hand: SetProperGroups
 
-        internal void SetProperGroupsToHand(List<CardInfo> properGroupList, List<CardInfo> hand)
+        private void SetProperGroupsToHand(List<CardInfo> properGroupList)
         {
             for (int i = 0; i < properGroupList.Count; i++)
             {
-                hand.Remove(properGroupList[i]);
-                hand.Insert(i, properGroupList[i]);
+                _hand.Remove(properGroupList[i]);
+                _hand.Insert(i, properGroupList[i]);
                 Debug.Log($"{ properGroupList[i].Type }_{ properGroupList[i].Value }");
             }
         }

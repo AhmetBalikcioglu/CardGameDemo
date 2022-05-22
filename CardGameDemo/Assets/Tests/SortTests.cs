@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Main.Game;
 using Main.Game.Application.Managers;
 using Main.Game.Data;
 using NUnit.Framework;
@@ -11,17 +10,11 @@ public class SortTests
     [Test]
     public void TestCase1AscendingOrdered()
     {
-        var hand = new List<CardInfo>(Config.HandTestCase1ConfigList);
-
         var handManager = new HandManager();
         
-        var properAscendingGroupsList = handManager.GetProperAscendingGroups(hand);
+        handManager.CreateTestCaseHand();
+        handManager.ChangeHandOrder(HandOrder.Ascending);
 
-        for (int i = properAscendingGroupsList.Count - 1; i >= 0 ; i--)
-        {
-            handManager.SetProperGroupsToHand(properAscendingGroupsList[i], hand);
-        }
-        
         var handTestCase1AscendingOrdered = new List<CardInfo>()
         { 
             { new CardInfo() { Type = CardType.Spades, Value = CardValue.Ace } },
@@ -37,7 +30,7 @@ public class SortTests
             { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Ace } }
         };
         
-        CollectionAssert.AreEqual(handTestCase1AscendingOrdered, hand);
+        CollectionAssert.AreEqual(handTestCase1AscendingOrdered, handManager.Hand);
     }
 
     #endregion
@@ -47,17 +40,11 @@ public class SortTests
     [Test]
     public void TestCase1SimilarOrdered()
     {
-        var hand = new List<CardInfo>(Config.HandTestCase1ConfigList);
-
         var handManager = new HandManager();
         
-        var properSimilarGroupsList = handManager.GetProperSimilarGroups(hand);
+        handManager.CreateTestCaseHand();
+        handManager.ChangeHandOrder(HandOrder.Similar);
 
-        for (int i = properSimilarGroupsList.Count - 1; i >= 0 ; i--)
-        {
-            handManager.SetProperGroupsToHand(properSimilarGroupsList[i], hand);
-        }
-        
         var handTestCase1SimilarOrdered = new List<CardInfo>()
         {
             { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Ace } },
@@ -73,8 +60,39 @@ public class SortTests
             { new CardInfo() { Type = CardType.Spades, Value = CardValue.Three } }
         };
         
-        CollectionAssert.AreEqual(handTestCase1SimilarOrdered, hand);
+        CollectionAssert.AreEqual(handTestCase1SimilarOrdered, handManager.Hand);
     }
 
     #endregion
+    
+    #region TestCase1: SmartOrdered
+
+    [Test]
+    public void TestCase1SmartOrdered()
+    {
+        var handManager = new HandManager();
+        
+        handManager.CreateTestCaseHand();
+        handManager.ChangeHandOrder(HandOrder.Smart);
+
+        var handTestCase1SmartOrdered = new List<CardInfo>()
+        {
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Clubs, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Five } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Ace } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Two } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Ace } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Ace } }
+        };
+        
+        CollectionAssert.AreEqual(handTestCase1SmartOrdered, handManager.Hand);
+    }
+
+    #endregion
+
 }
