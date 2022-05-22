@@ -426,7 +426,8 @@ namespace Main.Game.Application.Managers
                         {
                             if (properAscendingGroups.Any())
                             {
-                                if (properAscendingGroups.Last().Last().Value + 1 == cardInfo.Value)
+                                var lastCard = properAscendingGroups.Last().Last();
+                                if (lastCard.Value + 1 == cardInfo.Value && lastCard.Type == cardInfo.Type)
                                 {
                                     properAscendingGroups.Last().Add(cardInfo);
                                     continue;
