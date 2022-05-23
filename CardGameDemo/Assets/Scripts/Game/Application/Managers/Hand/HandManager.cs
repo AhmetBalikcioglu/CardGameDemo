@@ -85,13 +85,14 @@ namespace Main.Game.Application.Managers
 
         #endregion
 
+        
         #region Hand: Create
 
         public void CreateHand()
         {
             if (AppController.Instance.AppConfig.TestEnabled)
             {
-                CreateTestCaseHand();
+                CreateTestCaseHand(AppController.Instance.AppConfig.Case);
             }
             else
             {
@@ -124,14 +125,15 @@ namespace Main.Game.Application.Managers
         
         #region Hand: CreateTestCase
 
-        internal void CreateTestCaseHand()
+        internal void CreateTestCaseHand(TestCase value)
         {
             _handOrder = HandOrder.None;
             
-            _hand = new List<CardInfo>(Config.HandTestCase1ConfigList);
+            _hand = new List<CardInfo>(Config.HandTestCaseDictionary[value]);
         }
-
+        
         #endregion
+        
         
         #region Hand: CardSwapped
 

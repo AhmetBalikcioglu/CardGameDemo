@@ -12,7 +12,7 @@ public class SortTests
     {
         var handManager = new HandManager();
         
-        handManager.CreateTestCaseHand();
+        handManager.CreateTestCaseHand(TestCase.Case1);
         handManager.ChangeHandOrder(HandOrder.Ascending);
 
         var handTestCase1AscendingOrdered = new List<CardInfo>()
@@ -42,7 +42,7 @@ public class SortTests
     {
         var handManager = new HandManager();
         
-        handManager.CreateTestCaseHand();
+        handManager.CreateTestCaseHand(TestCase.Case1);
         handManager.ChangeHandOrder(HandOrder.Similar);
 
         var handTestCase1SimilarOrdered = new List<CardInfo>()
@@ -72,7 +72,7 @@ public class SortTests
     {
         var handManager = new HandManager();
         
-        handManager.CreateTestCaseHand();
+        handManager.CreateTestCaseHand(TestCase.Case1);
         handManager.ChangeHandOrder(HandOrder.Smart);
 
         var handTestCase1SmartOrdered = new List<CardInfo>()
@@ -94,5 +94,94 @@ public class SortTests
     }
 
     #endregion
+    
+    #region TestCase2: AscendingOrdered
 
+    [Test]
+    public void TestCase2AscendingOrdered()
+    {
+        var handManager = new HandManager();
+        
+        handManager.CreateTestCaseHand(TestCase.Case2);
+        handManager.ChangeHandOrder(HandOrder.Ascending);
+
+        var handTestCase2AscendingOrdered = new List<CardInfo>()
+        { 
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Ace } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Two } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Four } }, 
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Five } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Clubs, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Ace } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Four } },
+        };
+        
+        CollectionAssert.AreEqual(handTestCase2AscendingOrdered, handManager.Hand);
+    }
+
+    #endregion
+    
+    #region TestCase2: SimilarOrdered
+
+    [Test]
+    public void TestCase2SimilarOrdered()
+    {
+        var handManager = new HandManager();
+        
+        handManager.CreateTestCaseHand(TestCase.Case2);
+        handManager.ChangeHandOrder(HandOrder.Similar);
+
+        var handTestCase2SimilarOrdered = new List<CardInfo>()
+        {
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Clubs, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Two } },
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Five } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Ace } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Ace } }
+        };
+        
+        CollectionAssert.AreEqual(handTestCase2SimilarOrdered, handManager.Hand);
+    }
+
+    #endregion
+    
+    #region TestCase2: SmartOrdered
+
+    [Test]
+    public void TestCase2SmartOrdered()
+    {
+        var handManager = new HandManager();
+        
+        handManager.CreateTestCaseHand(TestCase.Case2);
+        handManager.ChangeHandOrder(HandOrder.Smart);
+
+        var handTestCase2SmartOrdered = new List<CardInfo>()
+        {
+            { new CardInfo() { Type = CardType.Clubs, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Five } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Ace } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Two } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Ace } }
+        };
+        
+        CollectionAssert.AreEqual(handTestCase2SmartOrdered, handManager.Hand);
+    }
+
+    #endregion
 }

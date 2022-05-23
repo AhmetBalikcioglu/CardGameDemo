@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: AppConfig
   m_EditorClassIdentifier: 
   TestEnabled: 1
+  Case: 1

@@ -1,3 +1,4 @@
+using Main.Game.Data;
 using UnityEngine;
 
 namespace Main
@@ -7,5 +8,6 @@ namespace Main
     {
         [Header("Test")]
         public bool TestEnabled;
+        public TestCase Case;
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Codice.Client.BaseCommands;
 using Main.Game.Data;
 using UnityEngine;
 
@@ -17,13 +18,29 @@ namespace Main.Game
 
         public const int TotalHandCount = 11;
 
+        #region UI
+
         public const int CircleRadiusForArc = 20;
         public const float CircleYPositionForArc = -23f;
         public const float DegreeBetweenCardsForArc = 0.05f;
         
+        #endregion
+
+        #region Test
+
+        public static readonly Dictionary<TestCase, List<CardInfo>> HandTestCaseDictionary = new Dictionary<TestCase, List<CardInfo>>()
+        {
+            {
+                TestCase.Case1, HandTestCase1ConfigList
+            },
+            {
+                TestCase.Case2, HandTestCase2ConfigList
+            }
+        };
+
         #region Test - Case1
 
-        public static readonly List<CardInfo> HandTestCase1ConfigList = new List<CardInfo>()
+        public static List<CardInfo> HandTestCase1ConfigList => new List<CardInfo>()
         {
             { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Ace } },
             { new CardInfo() { Type = CardType.Spades, Value = CardValue.Two } },
@@ -37,6 +54,27 @@ namespace Main.Game
             { new CardInfo() { Type = CardType.Spades, Value = CardValue.Three } },
             { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Four } }
         };
+
+        #endregion
+        
+        #region Test - Case2
+
+        public static List<CardInfo> HandTestCase2ConfigList => new List<CardInfo>()
+        {
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Two } },
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Five } },
+            { new CardInfo() { Type = CardType.Hearts, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Ace } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Clubs, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Four } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Ace } },
+            { new CardInfo() { Type = CardType.Spades, Value = CardValue.Three } },
+            { new CardInfo() { Type = CardType.Diamonds, Value = CardValue.Four } }
+        };
+
+        #endregion
 
         #endregion
         
